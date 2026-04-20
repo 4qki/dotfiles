@@ -1,15 +1,18 @@
 vim.pack.add({
-	{ src = "https://github.com/slugbyte/lackluster.nvim", },
-	{ src = "https://github.com/nexxeln/vesper.nvim", },
-	{ src = "https://github.com/dgox16/oldworld.nvim", },
-	{ src = "https://github.com/nvim-mini/mini.nvim", },
+	{ src = "https://github.com/slugbyte/lackluster.nvim" },
+	{ src = "https://github.com/nexxeln/vesper.nvim" },
+	{ src = "https://github.com/dgox16/oldworld.nvim" },
+	{ src = "https://github.com/vague-theme/vague.nvim" },
+	{ src = "https://github.com/scottmckendry/cyberdream.nvim" },
+	{ src = "https://github.com/craftzdog/solarized-osaka.nvim" },
+	{ src = "https://github.com/nvim-mini/mini.nvim" },
 	{ src = "https://github.com/saghen/blink.cmp", version = "v1.10.2" },
 	{ src = "https://github.com/neovim/nvim-lspconfig" },
-	{ src = "https://github.com/nvim-lua/plenary.nvim", },
-	{ src = "https://github.com/mason-org/mason.nvim", },
-	{ src = "https://github.com/mason-org/mason-lspconfig.nvim", },
-	{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim", },
-	{ src = "https://github.com/nvim-telescope/telescope.nvim", },
+	{ src = "https://github.com/nvim-lua/plenary.nvim" },
+	{ src = "https://github.com/mason-org/mason.nvim" },
+	{ src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+	{ src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
+	{ src = "https://github.com/nvim-telescope/telescope.nvim" },
 	{ src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
 	{ src = "https://github.com/akinsho/toggleterm.nvim" },
 	{ src = "https://github.com/stevearc/oil.nvim" },
@@ -22,6 +25,17 @@ require("lackluster").setup({
 
 require("vesper").setup({
 	transparent = "true",
+})
+
+require("vague").setup({
+	transparent = "true",
+})
+
+require("cyberdream").setup({
+	transparent = true,
+	saturation = 0.95,
+	cache = true,
+	borderless_pickers = true
 })
 
 local servers = {
