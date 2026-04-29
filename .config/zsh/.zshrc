@@ -2,19 +2,22 @@
 
 autoload -Uz colors && colors # load colors
 stty -ixon # disable C-s and C-q
-PS1='%F{green}%m%f:%F{blue}[%F{red}%n%f%F{blue}]%f:%F{magenta}%~%f%F{yellow}$%f '
-PS1="%F{cyan}%n%f%F{red}@%f%F{cyan}%m%f %F{green}$%f "
+PROMPT='%F{green}%m%f:%F{blue}[%F{red}%n%f%F{blue}]%f:%F{magenta}%~%f%F{yellow}$%f '
+PROMPT="%F{cyan}%n%f%F{red}@%f%F{cyan}%m%f %F{green}$%f "
 #PS2="%F{9}%n%f%F{cyan}@%f%F{9}%m%f %F{green}$%f "
 #PS2="%F{9}%n%f%F{cyan}@%f%F{9}%m%f %F{magenta}%~%f %F{green}$%f "
 #PS2="[%~%f] "
 PS2="%~%f $ "
-#PS1="%F{6}%n%f%F{red}@%f%F{6}%m%f %F{magenta}%~%f %F{green}$%f "
-#PS1="%F{cyan}%n@%m%f %F{green}%~%f %F{foreground}$%f "
-#PS1="%F{green}%n%F{foreground}@%m %F{green}%~%f$%f "
-PS1="%~%f $ "
-#PS1="%F{red}λ%f "
-#PS1="%F{green}%n@%m %F{green}%~ %F{cyan}$%f "
-#PS1="%F{red}[%f%F{yellow}%n%f%F{green}@%f%F{blue}%m%f %F{magenta}%~%f%F{red}]%f%F{cyan}$%f "
+#PROMPT="%F{6}%n%f%F{red}@%f%F{6}%m%f %F{magenta}%~%f %F{green}$%f "
+#PROMPT="%F{cyan}%n@%m%f %F{green}%~%f %F{foreground}$%f "
+#PROMPT="%F{green}%n%F{foreground}@%m %F{green}%~%f$%f "
+#PROMPT="%F{green}%~%f %# "
+PROMPT='%F{cyan}%~%f'$'\n''%F{green}❯%f '
+#PROMPT='%F{242}%T%f %F{blue}%n%f in %F{green}%~%f
+#%# '
+#PROMPT="%F{red}λ%f "
+#PROMPT="%F{green}%n@%m %F{green}%~ %F{cyan}$%f "
+#PROMPT="%F{red}[%f%F{yellow}%n%f%F{green}@%f%F{blue}%m%f %F{magenta}%~%f%F{red}]%f%F{cyan}$%f "
 
 setopt autocd # any directory typed is automatically cd-ed into.
 setopt interactive_comments # i can do stuff like THIS
@@ -79,5 +82,13 @@ zle -N vi-yank-clip
 bindkey -M vicmd 'y' vi-yank-clip
 export KEYTIMEOUT=1
 
+tms() {
+	if [ -z "$TMUX" ]
+	then
+	    tmux attach -t TMUX || tmux new -s TMUX
+	fi
+}
+#tms
+
 # should be last
-#source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh

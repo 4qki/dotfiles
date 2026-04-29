@@ -29,5 +29,5 @@ esac
 
 #echo $choice > ~/.local/share/theme
 echo $choice $bg > ~/.local/share/theme
-pkill -USR1 st &
-pkill -1 dwm &
+kill -USR1 $(pidof st) &
+kill -1 $(pidof dwm) &

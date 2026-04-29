@@ -11,7 +11,7 @@ mkdir -p "$HOME/pics/ss"
 
 case "$choice" in
     full)
-        scrot "$sf" || exit
+        sleep 0.1 && scrot "$sf" || exit
         ;;
     select)
         scrot -s "$sf" || exit

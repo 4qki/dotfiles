@@ -10,7 +10,7 @@
 bm=$(cat ~/.local/share/bookmarks)
 
 # Select bookmark with dmenu
-choice=$(printf "%s" "${bm}" | dmenu -b -i -p "What bookmark to open?" )
+choice=$(printf "%s" "${bm}" | dmenu -b -p "What bookmark to open?" )
 
 # Open with xdg
 xdg-open "$choice"

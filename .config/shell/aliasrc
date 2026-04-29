@@ -19,14 +19,13 @@ mk(){
 
 command -v z>/dev/null && alias cd='z' # smart cd (eval "$(zoxide init zsh)")
 command -v nvim>/dev/null && alias vim='nvim' # self explanatory
-command -v helix>/dev/null && alias hx='helix' # self explanatory
 command -v lfub>/dev/null && alias lf='lfub' # ueberzug in lf
 
 # xinitrc
 [ -f "$XINITRC" ] && alias startx='startx $XINITRC'
 
 # doas commands
-for cmd in xbps-install xbps-remove pacman poweroff reboot sv; do
+for cmd in xbps-install xbps-remove poweroff reboot sv; do
   alias $cmd="doas $cmd"
 done; unset cmd
 

@@ -1,5 +1,5 @@
 # prompt
-PS1="\033[32m\w\033[0m % "
+PS1='\[\e[92m\]\u@\h\[\e[0m\] \[\e[94m\]\w\[\e[0m\] \\$ '
 
 # disable C-s and C-q
 stty -ixon
@@ -8,7 +8,7 @@ stty -ixon
 eval "$(zoxide init bash)"
 
 # alias
-alias ls="ls --color=auto"
+alias ls="lsd"
 alias ll="ls -l"
 alias la="ls -la"
 alias grep="grep --color=auto"
