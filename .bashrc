@@ -8,19 +8,22 @@ stty -ixon
 eval "$(zoxide init bash)"
 
 # alias
-alias ls="lsd"
-alias ll="ls -l"
-alias la="ls -la"
-alias grep="grep --color=auto"
-alias vi="nvim"
-alias vim="nvim"
-alias p="doas pacman"
-alias cd="z"
-alias mk="doas make install"
-alias mkdir="mkdir -pv"
-alias mv="mv -iv"
-alias rsync="rsync -vrPlu"
-alias g="git"
+alias ls='lsd'
+alias ll='ls -l'
+alias la='ls -la'
+alias grep='grep --color=auto'
+alias vi='nvim'
+alias vim='nvim'
+alias p='doas pacman'
+alias cd='z'
+alias mk='doas make install'
+alias mkdir='mkdir -pv'
+alias mv='mv -iv'
+alias rsync='rsync -vrPlu'
+alias g='git'
+alias cdm='cd $HOME/.local/src/dwm; nvim .'
+alias cds='cd $HOME/.local/src/st; nvim .'
+alias mux='mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $(cat $HOME/.muxrc)'
 
 # enable completion with doas
 complete -F _command doas

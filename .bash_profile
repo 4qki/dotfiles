@@ -1,5 +1,6 @@
 # ensure bashrc is loaded
 [[ -f ~/.bashrc ]] && . ~/.bashrc
+
 # set editor
 export EDITOR="nvim"
 export VISUAL="${EDITOR:-nvim}"
@@ -9,14 +10,14 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/bin/statusbar:$PATH"
 
 # set manpager
-export PAGER="less"
+export PAGER="nvim +Man!"
 
 # set cursor
 export XCURSOR_THEME="Bibata-Original-Classic"
 export XCURSOR_SIZE="24"
 
 # set term
-export TERMINAL="wezterm"
+export TERMINAL="st"
 
 # set xdg dirs
 export XDG_CONFIG_HOME="$HOME/.config"
