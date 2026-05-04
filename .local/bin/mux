@@ -1,0 +1,58 @@
+#!/bin/sh
+# simple shell script for playing music
+# playlist syntax - ls $(cat $HOME/.muxrc)/foo
+
+musicdir="$(cat $HOME/.muxrc)"
+playlistdir="$HOME/.local/share/playlists"
+
+# define colors
+red='\033[00;31m'
+green='\033[00;32m'
+yellow='\033[00;33m'
+blue='\033[00;34m'
+purple='\033[00;35m'
+cyan='\033[00;36m'
+lightgray='\033[00;37m'
+bred='\033[01;31m'
+bgreen='\033[01;32m'
+byellow='\033[01;33m'
+bblue='\033[01;34m'
+bcyan='\033[01;36m'
+
+reset='\033[0m'
+
+# if playlist directory is not created, create it.
+
+if [ ! -f "$playlistdir" ]; then
+	mkdir -p $playlistdir
+fi
+
+case $1 in "")
+    echo "now playing from $musicdir"
+    mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf $musicdir
+;;
+
+"h"|"help")
+    printf "usage: ${bgreen}mux${reset} ${blue}[COMMAND]${reset}\n${lightgray}# without any options, mux will just play the playlist in order.${reset}
+    ${bgreen}h${reset},  ${cyan}help${reset}             show help
+    ${bgreen}s${reset},  ${cyan}shuffle${reset}          shuffle music
+    ${bgreen}p${reset},  ${cyan}playlist${reset}         play selected playlist\n"
+;;
+
+"s"|"shuffle")
+    echo "now shuffling $musicdir"
+    mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $musicdir
+;;
+
+"p"|"playlist")
+    while true; do
+    ls -1 $playlistdir
+    echo "\nenter choice: "
+    read choice
+
+    echo "now playing $choice"
+    mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $choice
+        done
+;;
+
+esac
