@@ -23,6 +23,7 @@ alias rsync='rsync -vrPlu'
 alias g='git'
 alias cdm='cd $HOME/.local/src/dwm; nvim .'
 alias cds='cd $HOME/.local/src/st; nvim .'
+alias neofetch='fastfetch -c neofetch'
 #alias mux='mpv --vo=null --volume=60 --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $(cat $HOME/.muxrc)'
 
 # enable completion with doas
@@ -33,3 +34,9 @@ shopt -s autocd
 
 # allow comments in commands
 shopt -s interactive_comments
+
+# tmux
+if [ -z "$TMUX" ]
+	then
+		tmux attach -t tmux || tmux new -s tmux
+fi

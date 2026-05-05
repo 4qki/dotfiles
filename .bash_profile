@@ -8,6 +8,7 @@ export VISUAL="${EDITOR:-nvim}"
 # scripts
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.local/bin/statusbar:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # set manpager
 export PAGER="nvim +Man!"

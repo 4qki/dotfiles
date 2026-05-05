@@ -1,6 +1,6 @@
 #!/bin/sh
 # simple shell script for playing music
-# playlist syntax - ls $(cat $HOME/.muxrc)/foo
+# NOTE: playlist syntax - ls $(cat $HOME/.muxrc)/foo
 
 musicdir="$(cat $HOME/.muxrc)"
 playlistdir="$HOME/.local/share/playlists"
@@ -22,7 +22,6 @@ bcyan='\033[01;36m'
 reset='\033[0m'
 
 # if playlist directory is not created, create it.
-
 if [ ! -f "$playlistdir" ]; then
 	mkdir -p $playlistdir
 fi
