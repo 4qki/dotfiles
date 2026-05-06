@@ -32,10 +32,13 @@ case $1 in "")
 ;;
 
 "h"|"help")
-    printf "usage: ${bgreen}mux${reset} ${blue}[COMMAND]${reset}\n${lightgray}# without any options, mux will just play the playlist in order.${reset}
+    printf "usage: ${bgreen}mux${reset} ${blue}[COMMAND]${reset}
+    ${lightgray}# without any options, mux will just play the playlist in order.${reset}
     ${bgreen}h${reset},  ${cyan}help${reset}             show help
     ${bgreen}s${reset},  ${cyan}shuffle${reset}          shuffle music
-    ${bgreen}p${reset},  ${cyan}playlist${reset}         play selected playlist\n"
+    ${bgreen}p${reset},  ${cyan}playlist${reset}         play selected playlist
+    ${bgreen}d${reset},  ${cyan}download${reset}         downloads song/playlist from specified url\n
+"
 ;;
 
 "s"|"shuffle")
@@ -49,9 +52,33 @@ case $1 in "")
     echo "\nenter choice: "
     read choice
 
+    if [ -z "$choice" ]; then
+        echo "${bred}error:${reset} no playlist selected"
+        exit 1
+    fi
+
     echo "now playing $choice"
     mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $choice
         done
+;;
+
+"d"|"download")
+    # ensure only urls remain
+    shift
+
+    if [ -z "$1" ]; then
+        echo "${bred}error:${reset} no url(s) provided"
+        echo "usage: ${bgreen}mux${reset} ${cyan}d${reset} [url1] [url2] ..."
+        exit 1
+    fi
+
+    for url in "$@"; do
+        echo "${cyan}downloading:${reset} $url"
+        yt-dlp -x --audio-format flac --audio-quality 0 \
+               -o "$musicdir/%(title)s.%(ext)s" \
+               "$url"
+    done
+    echo "${bgreen}all downloads finished${reset}"
 ;;
 
 esac
