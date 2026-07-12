@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-playerctl -p -F spotify metadata title >/dev/null && kill -45 "$(pidof "${STATUSBAR:-dwmblocks}")" || break

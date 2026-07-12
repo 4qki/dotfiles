@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Define location explicitly
+LOCATION="Orlando"
+
+# Get weather data from wttr.in
+weather_data=$(curl -s "wttr.in/$LOCATION?format=%C+%t")
+
+# Extract weather condition (handles multi-word conditions like "Light rain")
+condition=$(echo "$weather_data" | awk -F ' +' '{for (i=1; i<=NF-1; i++) printf $i " "; print ""}' | sed 's/ $//')
+
+# Extract temperature (last field)
+temperature=$(echo "$weather_data" | awk '{print $NF}')
+
+# Get current hour (24-hour format)
+hour=$(date +%H)
+
+# Determine if it's day or night (assuming 6:00-18:00 is daytime)
+if (( hour >= 6 && hour < 18 )); then
+    DAYTIME=true
+else
+    DAYTIME=false
+fi
+
+# Select Nerd Font weather icon based on condition and time of day
+case "$condition" in
+    "Clear"|"Sunny")
+        if $DAYTIME; then icon=""  # Sunny
+        else icon=""  # Clear Night
+        fi
+        ;;
+    "Partly cloudy")
+        if $DAYTIME; then icon=""  # Partly Cloudy (Day)
+        else icon=""  # Partly Cloudy (Night)
+        fi
+        ;;
+    "Cloudy") icon="" ;;  # Cloudy
+    "Overcast") icon="" ;;  # Overcast
+    "Light rain"|"Drizzle") icon="" ;;  # Light Rain / Drizzle
+    "Moderate rain"|"Showers") icon="" ;;  # Moderate Rain / Showers
+    "Heavy rain") icon="" ;;  # Heavy Rain
+    "Thunderstorm") 
+        if $DAYTIME; then icon=""  # Thunderstorm (Day)
+        else icon=""  # Thunderstorm (Night)
+        fi
+        ;;
+    "Light snow") icon="" ;;  # Light Snow
+    "Moderate snow") icon="" ;;  # Moderate Snow
+    "Heavy snow") icon="" ;;  # Heavy Snow
+    "Fog"|"Mist") 
+        if $DAYTIME; then icon=""  # Fog (Day)
+        else icon=""  # Fog (Night)
+        fi
+        ;;
+    "Hail") icon="" ;;  # Hail
+    "Sleet") icon="" ;;  # Sleet
+    "Windy") icon="" ;;  # Windy
+    "Hot") icon="" ;;  # Hot Weather
+    "Cold") icon="" ;;  # Cold Weather
+    "Tornado") icon="" ;;  # Tornado
+    "Hurricane") icon="" ;;  # Hurricane
+    *) icon="" ;;  # Unknown (Fallback)
+esac
+
+# Print weather with icon
+echo "$icon  $temperature"

@@ -1,14 +1,14 @@
 [global]
     monitor = 0
     follow = keyboard
-    width = 370
+    #width = 370
     height = (0,350)
-    offset = (5,30)
+#    offset = (5,30)
     frame_width = 0
-    padding = 2
+    padding = 4
     horizontal_padding = 2
     transparency = 0
-    font = Monospace 12
+    font = Iosevka Nerd Font 12
     format = "<b>%s</b>\n%b"
 
 [urgency_low]

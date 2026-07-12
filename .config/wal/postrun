@@ -1,2 +1,0 @@
-#!/bin/sh
-cp ~/.cache/wal/pywal.ron ~/.config/rmpc/themes

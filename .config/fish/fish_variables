@@ -1,0 +1,4 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR __fish_initialized:4300
+SETUVAR fish_user_paths:/home/max/\x2ebin\x1e/home/max/\x2elocal/bin\x1e/home/max/\x2elocal/bin/statusbar\x1e/home/max/\x2ecargo/bin\x1e/home/max/\x2econfig/emacs/bin\x1e/home/max/Applications\x1e/var/lib/flatpak/exports/bin/

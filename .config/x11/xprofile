@@ -1,7 +1,8 @@
 #!/bin/sh
-#picom &
-fastcompmgr &
-hwall --restore &
+picom &
+#fastcompmgr &
+#hwall --restore &
+setbg
 #pwl restart &
 brightnessctl s 100% &
 clipmenud &
@@ -10,6 +11,7 @@ mpd &
 #xss-lock -- i3lock -n &
 
 #switcher $(cat ~/.local/share/theme)
+xrdb -merge "$HOME/.Xresources" &
 #xrdb -merge "${XDG_CONFIG_HOME:-$HOME/.config}/x11/Xresources" &
 
 # goodness sake

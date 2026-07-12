@@ -1,5 +1,3 @@
-dotfiles
----------
-my configurations and stuff, managed using [sdm](https://aqki.srht.site/p/sdm.html)
+# dotfiles
 
-![dwm](src/dwm.png)
+my configurations and stuff, managed using [sdm](https://aqki.srht.site/p/sdm.html)

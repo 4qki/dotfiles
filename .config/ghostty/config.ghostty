@@ -1,0 +1,14 @@
+font-family = "Iosevka Nerd Font"
+# font-family = "BlexMono Nerd Font"
+# font-family = "Maple Mono NF"
+# font-family = "JetBrainsMono Nerd Font"
+font-size = 23
+theme = "Poimandres Darker"
+background = black
+background-opacity = 0.8
+window-decoration = none
+window-padding-x = 15
+window-padding-y = 15
+confirm-close-surface = false
+window-inherit-working-directory = false
+keybind = enter=text:\r

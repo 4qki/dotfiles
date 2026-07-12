@@ -2,8 +2,8 @@
 # simple shell script for playing music
 # NOTE: playlist syntax - ls $(cat $HOME/.muxrc)/foo
 
-MUSIC_DIR="$(cat $HOME/.muxrc)"
-PLAYLIST_DIR="$HOME/.local/share/playlists"
+musicdir="$(cat $HOME/.muxrc)"
+playlistdir="$HOME/.local/share/playlists"
 
 # define colors
 red='\033[00;31m'
@@ -21,68 +21,24 @@ bcyan='\033[01;36m'
 
 reset='\033[0m'
 
+# function for music playing
+play() { 
+  clear
+  echo "${cyan}now playing: $(basename "$1")${reset}"
+  mpv --vo=null --video=no --term-osd-bar --no-resume-playback --loop-playlist=inf "$@"
+}
+
 # if playlist directory is not created, create it.
-if [ ! -f "$PLAYLIST_DIR" ]; then
-	mkdir -p $PLAYLIST_DIR
+if [ ! -f "$playlistdir" ]; then
+	mkdir -p $playlistdir
 fi
 
-# custom commands
-list() {
-    echo "$(color "$1" "$(find $2 -mindepth 1 -maxdepth 1 -type f -exec basename {} .$3 \;)")"
-}
-
-color() {
-    echo "${1}$2${reset}"
-}
-
 case $1 in "")
-    echo "now playing from $MUSIC_DIR"
-    mpv --vo=null --video=no --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf $MUSIC_DIR
-;;
-
-"h"|"help")
-    printf "usage: ${bgreen}mux${reset} ${blue}[COMMAND]${reset}
-    ${lightgray}# without any options, mux will just play the playlist in order.${reset}
-    ${bgreen}h${reset},  ${cyan}help${reset}             show help
-    ${bgreen}s${reset},  ${cyan}shuffle${reset}          shuffle music
-    ${bgreen}ap${reset}, ${cyan}add${reset}              create/add songs to playlist
-    ${bgreen}p${reset},  ${cyan}playlist${reset}         play selected playlist
-    ${bgreen}d${reset},  ${cyan}download${reset}         downloads song/playlist from specified url
-    ${bgreen}ls${reset}, ${cyan}list-songs${reset}       lists all songs
-    ${bgreen}f${reset},  ${cyan}find${reset}             search and play a specific song using fzf\n
-"
+    play $musicdir
 ;;
 
 "s"|"shuffle")
-    echo "now shuffling $MUSIC_DIR"
-    mpv --vo=null --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $MUSIC_DIR
-;;
-
-"ap"|"add")
-    echo "enter playlist name (new or existing):"
-    read -r pname
-    [ -z "$pname" ] && exit 0
-
-    target_dir="$PLAYLIST_DIR/$pname"
-    mkdir -p "$target_dir" 2>/dev/null
-
-    selections=$(find -L "$MUSIC_DIR" -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" \) 2>/dev/null | fzf -m --prompt="add to $pname > " --height=60% --border)
-
-    if [ -n "$selections" ]; then
-        echo "$selections" | while read -r file; do
-            ln -s "$file" "$target_dir/$(basename "$file")" 2>/dev/null
-        done
-        echo "${bgreen}added to $pname${reset}"
-    fi
-;;
-
-"p"|"playlist")
-    selection=$(ls -d "${PLAYLIST_DIR}"/*/ 2>/dev/null | fzf --prompt="playlist > " --height=40% --border)
-
-    if [ -n "$selection" ]; then
-        echo "Now playing: $(basename "$selection")"
-        mpv --vo=null --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle "$selection"
-    fi
+    play $musicdir --shuffle
 ;;
 
 "d"|"download")
@@ -98,28 +54,57 @@ case $1 in "")
     for url in "$@"; do
         echo "${cyan}downloading:${reset} $url"
         yt-dlp -x --audio-format flac --audio-quality 0 \
-               -o "$MUSIC_DIR/%(title)s.%(ext)s" \
+               -o "$musicdir/%(title)s.%(ext)s" \
                "$url"
     done
     echo "${bgreen}all downloads finished${reset}"
 ;;
 
-"s"|"shuffle")
-    echo "now shuffling $MUSIC_DIR"
-    mpv --vo=null --no-video --term-osd-bar --no-resume-playback --loop-playlist=inf --shuffle $MUSIC_DIR
+"p"|"playlist")
+    list=$(ls -1 "$playlistdir" | fzf --prompt="playlist > ")
+        if [ -n "$list" ]; then
+            printf "shuffle '$list'? [y/N]: "; read -r confirm
+            if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+                play $playlistdir/$list --shuffle
+            fi
+            play $playlistdir/$list
+        fi
+        ;;
+
+"ap"|"add")
+    printf "playlist name: "; read -r pname
+    [ -z "$pname" ] && exit 0
+    mkdir -p "$playlistdir/$pname"
+    find "$musicdir" -type f | fzf -m | while read -r f; do
+        ln -s "$f" "$playlistdir/$pname/$(basename "$f")" 2>/dev/null
+    done
+    ;;
+
+"dp"|"del")
+list=$(ls -1 "$playlistdir" | fzf --prompt="delete playlist > ")
+        if [ -n "$list" ]; then
+            printf "delete '$list'? [y/N]: "; read -r confirm
+            if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
+                rm -rf "$playlistdir/$list"
+                echo "deleted $list."
+            fi
+        fi
+        ;;
+
+"f"|"find") 
+    song=$(find "$musicdir" -type f | fzf --prompt="find > ")
+    [ -n "$song" ] && play "$song"
+    ;;
+
+*|"h"|"help")
+    printf "usage: ${bgreen}mux${reset} ${blue}[COMMAND]${reset}
+    ${lightgray}# without any options, mux will just play the playlist in order.${reset}
+    ${bgreen}h${reset},  ${cyan}help${reset}             show help ${bgreen}s${reset},  ${cyan}shuffle${reset}          shuffle music
+    ${bgreen}p${reset},  ${cyan}playlist${reset}         play selected playlist
+    ${bgreen}d${reset},  ${cyan}download${reset}         downloads song/playlist from specified url
+    ${bgreen}ap${reset},  ${cyan}add${reset}         adds a playlist
+    ${bgreen}dp${reset},  ${cyan}del${reset}         delete a playlist
+    ${bgreen}f${reset},  ${cyan}find${reset}         searches for songs\n
+"
 ;;
-
-"ls"|"list-songs")
-    list "$bgreen" "$MUSIC_DIR" "flac"
-;;
-
-"f"|"find")
-    selection=$(find -L "$MUSIC_DIR" -type f \( -name "*.mp3" -o -name "*.flac" -o -name "*.m4a" -o -name "*.wav" \) 2>/dev/null | fzf --prompt="select > " --height=40% --layout=reverse --border)
-
-    if [ -n "$selection" ]; then
-        echo "now playing $selection"
-        mpv --vo=null --no-video --term-osd-bar --no-resume-playback "$selection"
-    fi
-;;
-
 esac
